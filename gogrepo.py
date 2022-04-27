@@ -110,7 +110,7 @@ HTTP_GAME_DOWNLOADER_THREADS = 4
 HTTP_PERM_ERRORCODES = (404, 403, 503)
 
 # Save manifest data for these os and lang combinations
-DEFAULT_OS_LIST = ['windows']
+DEFAULT_OS_LIST = ['windows', 'linux', 'mac']
 DEFAULT_LANG_LIST = ['en']
 
 # These file types don't have md5 data from GOG
@@ -859,7 +859,7 @@ def cmd_download(savedir, skipextras, skipgames, skipids, dryrun, id):
         for game_item in item.downloads + item.extras:
             if game_item.name is None:
                 continue  # no game name, usually due to 404 during file fetch
-            dest_file = os.path.join(item_homedir, game_item.name)
+            dest_file = os.path.join(item_homedir, game_item.os_type, game_item.name)
 
             if os.path.isfile(dest_file):
                 if game_item.size is None:
@@ -980,9 +980,9 @@ def cmd_backup(src_dir, dest_dir):
                 continue
 
             src_game_dir = os.path.join(src_dir, game.title)
-            src_file = os.path.join(src_game_dir, itm.name)
+            src_file = os.path.join(src_game_dir, itm.os_type, itm.name)
             dest_game_dir = os.path.join(dest_dir, game.title)
-            dest_file = os.path.join(dest_game_dir, itm.name)
+            dest_file = os.path.join(dest_game_dir, itm.os_type, itm.name)
 
             if os.path.isfile(src_file):
                 if itm.size != os.path.getsize(src_file):
